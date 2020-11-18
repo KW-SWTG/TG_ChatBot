@@ -7,72 +7,23 @@
 <script src="{%static 'js/main.js' %}">
 </script>
 {% endblock %}
-
 {% block body %}
     {% include 'navbar.html' %}
-        <main id="main"><!------ Include the above in your HEAD tag ---------->
-<!------ Include the above in your HEAD tag ---------->
-        <link href="{% static 'assets/css/new.css' %}" type="text/css" rel="stylesheet">
-        <div class="container">
-            <div style="margin-top:150px;"></div>
-                <div class="messaging">
-                    <div class="inbox_msg">
-                        <div class="mesgs">
-                          <div class="msg_history">
-                              <div class="incoming_msg">
-                              <div class="received_msg">
-                                <div class="received_withd_msg" id="user">
-                                  <p>Test, which is a new approach to have</p>
-                                  </div>
-                              </div>
-                            </div>
-                            <div class="outgoing_msg">
-                              <div class="sent_msg">
-                                <p>Test which is a new approach to have all
-                                  solutions</p>
-                                </div>
-                            </div>
-                            <div class="incoming_msg">
-                              <div class="received_msg">
-                                <div class="received_withd_msg">
-                                  <p>Test, which is a new approach to have
-                                  and sell direct to you, which means quality, exclusive</p>
-                                  </div>
-                              </div>
-                            </div>
-                            <div class="outgoing_msg">
-                              <div class="sent_msg">
-                                <p>Apollo University, Delhi, India Test</p>
-                                 </div>
-                            </div>
-                            <div class="incoming_msg">
-                              <div class="received_msg">
-                                <div class="received_withd_msg">
-                                  <p>We work directly with our designers and suppliers,
-                                    and sell direct to you, which means quality, exclusive
-                                    products, at a price anyone can afford.</p>
-                                 </div>
-                              </div>
-                            </div>
-                              <div class="incoming_msg">
-                              <div class="received_msg">
-                                <div class="received_withd_msg">
-                                  <p>We work directly with our designers and suppliers,
-                                    and sell direct to you, which means quality, exclusive
-                                    products, at a price anyone can afford.</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="type_msg">
-                            <div class="input_msg_write">
-                              <input type="text" id="buttons" class="write_msg" placeholder="Type a message" />
-                              <button class="msg_send_btn" type="button"  onclick="button_click()"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-    </div></div>
+<main id="main">
+<div id="bodybox">
+    <script src="{%static 'assets/js/new.js' %}">
+</script>
+    <div id='chatborder'>
+    <p id="chatlog7" class="chatlog">&nbsp;</p>
+    <p id="chatlog6" class="chatlog">&nbsp;</p>
+    <p id="chatlog5" class="chatlog">&nbsp;</p>
+    <p id="chatlog4" class="chatlog">&nbsp;</p>
+    <p id="chatlog3" class="chatlog">&nbsp;</p>
+    <p id="chatlog2" class="chatlog">&nbsp;</p>
+    <p id="chatlog1" class="chatlog">&nbsp;</p>
+    <input type="text" name="chat" id="chatbox" placeholder="text" onfocus="placeHolder()">
+  </div>
+</div>
 </main>
 {% include "footer.html" %}
 {% endblock%}
