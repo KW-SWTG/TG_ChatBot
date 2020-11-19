@@ -1,11 +1,5 @@
-body {
-  font: 15px arial, sans-serif;
-  background-color: #d9d9d9;
-  padding-top: 15px;
-  padding-bottom: 15px;
-}
 
-#bodybox {
+#bodybox{
   margin: auto;
   max-width: 550px;
   font: 15px arial, sans-serif;
@@ -16,7 +10,6 @@ body {
   padding-bottom: 25px;
   padding-right: 25px;
   padding-left: 25px;
-  box-shadow: 5px 5px 5px grey;
   border-radius: 15px;
 }
 
