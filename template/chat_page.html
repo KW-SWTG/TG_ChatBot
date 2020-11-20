@@ -11,19 +11,25 @@
     {% include 'navbar.html' %}
 <main id="main">
 <div id="bodybox">
-    <script src="{%static 'assets/js/new.js' %}">
-</script>
-    <div id='chatborder'>
-    <p id="chatlog7" class="chatlog">&nbsp;</p>
-    <p id="chatlog6" class="chatlog">&nbsp;</p>
-    <p id="chatlog5" class="chatlog">&nbsp;</p>
-    <p id="chatlog4" class="chatlog">&nbsp;</p>
-    <p id="chatlog3" class="chatlog">&nbsp;</p>
-    <p id="chatlog2" class="chatlog">&nbsp;</p>
-    <p id="chatlog1" class="chatlog">&nbsp;</p>
-    <input type="text" name="chat" id="chatbox" placeholder="text" onfocus="placeHolder()">
-  </div>
+    <link href="{%static 'assets/css/new.css' %}" rel="stylesheet" type="text/css">
+    <link href="{%static 'assets/css/want.css' %}" rel="stylesheet" type="text/css">
+    <div id="msg_list_bx">
+        <div class="megs">
+            <div class="mesgs">
+                <div class="msg_history" id="msg_list_bx_real">
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="input_msg_write">
+        <input type="text" name="chat" id="chatbox" placeholder="text"><!--onfocus="placeHolder()" 작동안돼고 지랄이냐씨발-->
+    </div>
 </div>
+</div>
+    <script src="{%static 'assets/js/new.js' %}">
+    </script>
+
 </main>
 {% include "footer.html" %}
 {% endblock%}
