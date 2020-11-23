@@ -50,7 +50,7 @@ function btn_click()
 
     let date=new Date();
     var date_txt=date.toLocaleTimeString();
-    alert(date.toLocaleTimeString());
+    //alert(date.toLocaleTimeString());
     var date_time=document.createElement("span");
     date_time.setAttribute("class", "time_date");
     var text_date=document.createTextNode(date_txt);
