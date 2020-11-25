@@ -194,5 +194,6 @@ function create()
     element.setAttribute("class",arguments[0]);
     element.setAttribute("id",arguments[1]);
     arguments[2].appendChild(element);
+    return element;
 }
 
