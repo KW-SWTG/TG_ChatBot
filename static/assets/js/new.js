@@ -4,6 +4,15 @@ var usr_msg="";
 
 var lastUserMessage = "";
 
+function create()
+{
+    var element=document.createElement("div");
+    element.setAttribute("class",arguments[0]);
+    element.setAttribute("id",arguments[1]);
+    arguments[2].appendChild(element);
+    return element;//parent를 위해 만들어진 element를 리턴받기
+}
+
 function btn_click()
 {
     count=count+1;
@@ -51,6 +60,7 @@ function btn_click()
     document.getElementById("chatbox").value = "";
 }
 
+
 document.onkeypress = keyPress;
 //if the key pressed is 'enter' runs the function newEntry()
 function keyPress(e) {
@@ -59,13 +69,5 @@ function keyPress(e) {
   if (key == 13 || key == 3) {
     btn_click();
   }
-
-function create()
-{
-    var element=document.createElement("div");
-    element.setAttribute("class",arguments[0]);
-    element.setAttribute("id",arguments[1]);
-    arguments[2].appendChild(element);
-    return element;//parent를 위해 만들어진 element를 리턴받기
 }
 
