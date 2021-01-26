@@ -38,26 +38,6 @@
             </div>
     </div>
 
-<!--    <div>-->
-<!--         <p id="data_table"></p>-->
-<!--        <input id="search_input" type="search" />-->
-<!--        <button id="search_button" type="submit"><i class="fa fa-search"></i></button>-->
-<!--        <input id="input_test" type="search" />-->
-<!--        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>-->
-<!--        <script>-->
-
-<!--        $('#search_button').click(-->
-<!--            function(){-->
-<!--             var search_key = $('#search_input').val()-->
-<!--             $.ajax({ url:'/search_table',-->
-<!--              success:function(data){-->
-<!--                document.getElementById("chatbox").value = data;-->
-<!--                    }-->
-<!--                    })-->
-<!--                      })-->
-<!--        </script>-->
-<!--    </div>-->
-
     <div name="test_insert">
             <div class="type_msg">
             <div class="input_msg_write">
@@ -86,41 +66,27 @@
             </div>
     </div>
 
-
-    <div>
-
-<!--        <form action="/model">-->
-<!--            {% csrf_token %}-->
-        <p>X 데이터 입력</p>
-        <input type="text" name="x">
-        <br>
-
-        <input id="test_input" type="button" value="Get predictions">
-
-    </div>
-    <div>
-        <p id="msg_iris"></p>
-    </div>
-
-</div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
- <script>
-    $(document).ready(function() {
-        $('.msg_send_btn').click(function(){
-            $.ajax({
-            url:"/model",
-            type:'POST',
-            data:{"x":note},
-            success:function(response){
-                alert(response);
-            },
-            });
-        });
-       });
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script>
+    $('.msg_send_btn').click(function(){
+    var $new=$("<div class='outgoing_msg'>"+"<div class='sent_msg'>"+"<p>"+ $('#chatbox').val()+"</p>"+"</div>"+"</div>")
+    $('#msg_list_bx_real').append($new);
+        $.ajax({
+            url:"{% url 'model' %}",
+            type:"POST",
+            data:{'x': $('#chatbox').val()},
+            dataType:'json',
+            success:function(data){
+                alert(data.result);
+                var $output=$("<div class='incoming_msg'>"+"<div class='received_msg'>"+"<div class='received_withd_msg'>"+"<p>"+ data.result +"</p>"+"</div>"+"</div>"+"</div>")
+                $('#msg_list_bx_real').append($output);
+            }
+        })
+    })
     </script>
 <!--<script src="{%static 'assets/js/new.js' %}">-->
 <!--</script>-->
-
+</div>
 </main>
 {% include "footer.html" %}
 {% endblock%}
