@@ -11,13 +11,10 @@ def home(request):
 
 def chatbot(request):
     rsChat = Msg.objects.all()
-    # ChatbotConfig.example();
-    # if rsChat.note !="": 비어있으면 아무것도 불러오지망
-    return render(request, "chat_page.html",
+    return render(request, "chat_pag.html",
                   {
                       'rsChat' : rsChat
                   })
-
 def chat_insert(request):
     cnote = request.GET['note']
     if cnote != "":
@@ -31,7 +28,7 @@ def chat_insert(request):
 def chat_delete(request):
    rows = Msg.objects.all()
    delete=rows.delete()
-   return render(request, "chat_page.html",)
+   return render(request, "chat_pag.html",)
 
 
 def Prediction(x, y, z, a):
@@ -47,17 +44,19 @@ def Prediction(x, y, z, a):
     return result
 
 def model(request):
+    x = int(request.POST.get('x', None))
+    # y = int(request.POST.get('y', None))
+    # z = int(request.POST.get('z', None))
+    # a = int(request.POST.get('a', None))
+    # x = int(request.GET['x'])
+    # y = int(request.GET['y'])
+    # z = int(request.GET['z'])
+    # a = int(request.GET['a'])
 
-    x = int(request.GET['x'])
-    y = int(request.GET['y'])
-    z = int(request.GET['z'])
-    a = int(request.GET['a'])
+    result = Prediction(x, 4, 3, 1)
 
-    result = Prediction(x, y, z, a)
-
-    context={ 'result': result }
-    return HttpResponse(json.dumps(context), content_type="application/json")
-    #return render(request, 'chat_page.html', {'result': result})
+    return HttpResponse(result)
+    #return render(request, 'chat_pag.html', {'result': result})
 #입력하면 출력하기 chat_page에다가 string 전달
 # def chat_update(request):
 #

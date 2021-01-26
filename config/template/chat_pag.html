@@ -16,9 +16,6 @@
     <div id="msg_list_bx">
             <div class="mesgs">
                 <div class="msg_history" id="msg_list_bx_real">
-                    {% if not rsChat %}
-                    <p></p>
-                    {% endif %}
                     {% if rsChat %}
                     {% for i in rsChat %}
                     <div class="outgoing_msg">
@@ -27,7 +24,6 @@
                             <span class="time_date">{{ i.time }}</span>
                         </div>
                     </div>
-                    <!--시간차 두고 채팅 불러오기, 홈페이지 나갔다가 들어오면 db 초기화 하기-->
                     <div class="incoming_msg">
                         <div class="received_msg">
                             <div class="received_withd_msg">
@@ -63,102 +59,67 @@
 <!--    </div>-->
 
     <div name="test_insert">
-        <form action="/chat_insert" id="frmChat">
             <div class="type_msg">
             <div class="input_msg_write">
                 <table>
                     <tr>
                          <td width="50" class="nav-menu">
                              <li class="drop-down">
-                             <button class="voice_btn"><img src="{%static 'assets/img/plus.png' %}"></button>
+                                <button class="voice_btn"><img src="{%static 'assets/img/plus.png' %}"></button>
                                 <ul>
                                   <li>
                                       <table>
                                           <tr>
                                               <td><a href="#"><button class="some_btn"><img src="{%static 'assets/img/voice_icon.png' %}"></button></a></td>
-                                              <td><a href="/chat_delete"><button class="some_btn"><img src="{%static 'assets/img/clear_icon.png' %}"></button></td>
+                                              <td><a href="/chat_delete"><button class="some_btn"><img src="{%static 'assets/img/clear_icon.png' %}"></button></a></td>
                                           </tr>
                                       </table>
                                   </li>
                                 </ul>
                                 </li>
                          </td>
-
-                        <td width="700" align="center"><input name="note" class="write_msg" type="text" id="chatbox" placeholder="메세지 입력"></td>
-                        <td width="60" align="center"><button class="msg_send_btn" type="button" onclick="javascript:btn_click();document.getElementById('frmChat').submit();"><img src="{%static 'assets/img/send_icon.png' %}"></button></td>
+                         <td width="700" align="center"><input name="note" class="write_msg" type="text" id="chatbox" placeholder="메세지 입력"></td>
+                         <td width="60" align="center"><button class="msg_send_btn" type="button"><img src="{%static 'assets/img/send_icon.png' %}"></button></td>
                     </tr>
                 </table>
             </div>
             </div>
-        </form>
-
     </div>
-<!--    <div class="type_msg">-->
-<!--        <div class="input_msg_write">-->
-<!--            <button class="voice_btn"><img src="{%static 'assets/img/voice_icon.png' %}"></button>-->
-<!--            <input class="write_msg" type="text" id="chatbox" placeholder="메세지 입력">-->
-<!--            <button class="msg_send_btn" type="button" onclick="btn_click();"><i class="fa fa-papper-plane-o" aria-hidden="true"><img src="{%static 'assets/img/send_icon.png' %}"></i></button>-->
-<!--        </div>-->
-<!--    </div>-->
+
+
     <div>
 
-        <form action="/model">
-            {% csrf_token %}
+<!--        <form action="/model">-->
+<!--            {% csrf_token %}-->
         <p>X 데이터 입력</p>
         <input type="text" name="x">
         <br>
 
-        <p>Y 데이터 입력</p>
-        <input type="text" name="y">
-        <br>
-
-        <p>Z 데이터 입력</p>
-        <input type="text" name="z">
-        <br>
-
-        <p>A 데이터 입력</p>
-        <input type="text" name="a">
-        <br>
-
-        <input class="test_input" type="submit" value="Get predictions">
-        </form>
+        <input id="test_input" type="button" value="Get predictions">
 
     </div>
     <div>
-        <h1>{{ result }}</h1>
+        <p id="msg_iris"></p>
     </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript">
-        $(.test_input).click(function(){
-            $.ajax(
-            {
-            type:"POST",
-            url: "/model".
-            data:{
-                'x':x,
-                'y':y,
-                'z':z,
-                'a':a,
-                'csrfmiddlewaretoken': '{{ csrf_token }}'
+
+</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+ <script>
+    $(document).ready(function() {
+        $('.msg_send_btn').click(function(){
+            $.ajax({
+            url:"/model",
+            type:'POST',
+            data:{"x":note},
+            success:function(response){
+                alert(response);
             },
-            dataType: "json",
-            success: function(response){
-            alert(response.result)
-            }
-            error: function(request, status, error)
-            {
-                alert("통신 실패")
-            }
-            })
-
-        })
+            });
+        });
+       });
     </script>
-
-</div>
-</div>
-
-<script src="{%static 'assets/js/new.js' %}">
-</script>
+<!--<script src="{%static 'assets/js/new.js' %}">-->
+<!--</script>-->
 
 </main>
 {% include "footer.html" %}
