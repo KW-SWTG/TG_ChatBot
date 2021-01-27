@@ -60,6 +60,8 @@
                          </td>
                          <td width="700" align="center"><input name="note" class="write_msg" type="text" id="chatbox" placeholder="메세지 입력"></td>
                          <td width="60" align="center"><button class="msg_send_btn" type="button"><img src="{%static 'assets/img/send_icon.png' %}"></button></td>
+                        <button id="recordBtn">Record</button>
+                        <button id="stopBtn">Stop</button>
                     </tr>
                 </table>
             </div>
@@ -69,6 +71,78 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script>
     //DB에는 msg만 저장?
+    var recordBtn = document.getElementById("recordBtn");
+    var stopBtn = document.getElementById("stopBtn");
+    var textInput = document.getElementById("chatbox");
+
+
+    function hasGetUserMedia() {
+        return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia || navigator.msGetUserMedia);
+    }
+
+    if (hasGetUserMedia() ){
+        var constraints = { audio:true, video:false }
+        navigator.mediaDevices.getUserMedia(constraints).then(stream => {streamHandlerFunction(stream)})
+        .catch(function(err) {
+            //enable the record button if getUserMedia() fails
+            recordBtn.disabled = true;
+            stopBtn.disabled = false;
+        })
+    }
+    else {
+        console.log("cant access getUserMedia");
+    }
+
+
+    function streamHandlerFunction(stream) {
+        console.log("getUsermedia success");
+
+        //start the recording
+        rec = new MediaRecorder(stream, {mimeType : 'audio/ogg'});
+        rec.ondataavailable = e =>{
+            console.log("Recording started");
+            var audioBinary = [];
+            audioBinary.push(e.data);
+            if( rec.state == "inactive"){
+                let blob = new Blob( audioBinary, {type:'audio/ogg; codecs=opus'});
+                sendData(blob);
+                // player.src = "C:/Users/paramir/Desktop/2020_2/졸작/stt/stt_sample_django/mysite/file.ogg"
+            }
+        }
+    }
+
+
+
+    recordBtn.onclick = e=> {
+        console.log("start recording btn clicked");
+        recordBtn.disabled = true;
+        stopBtn.disabled = false;
+        rec.start();
+    }
+
+    function sendData(data){
+        var request = new XMLHttpRequest();
+        var fd = new FormData();
+        fd.append("audio_data", data, "audiodata.ogg");
+        request.open("POST","stt/",true);
+        request.onreadystatechange = function (){
+            if(request.readyState == XMLHttpRequest.DONE) {
+                console.log(request.responseText);
+                textInput.value = request.responseText;
+            } else {}
+        }
+        request.send(fd);
+        // request.send("asdf");
+    }
+
+    stopBtn.onclick = e => {
+        console.log("stopButton clicked");
+        stopBtn.disabled = true;
+        recordBtn.disabled = false;
+        rec.stop();
+    }
+
     $('.msg_send_btn').click(function(){
     let date=new Date();
     var date_txt=date.toLocaleTimeString();
