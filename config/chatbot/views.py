@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from .models import Msg
+from .models import Msg, Qaset
 from django.shortcuts import redirect
 import numpy as np
 from .apps import ChatbotConfig
 from django.http import HttpResponse
 import simplejson as json
+
 
 def home(request):
     return render(request, "home.html")

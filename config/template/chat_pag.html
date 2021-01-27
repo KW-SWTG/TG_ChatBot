@@ -16,24 +16,24 @@
     <div id="msg_list_bx">
             <div class="mesgs">
                 <div class="msg_history" id="msg_list_bx_real">
-                    {% if rsChat %}
-                    {% for i in rsChat %}
-                    <div class="outgoing_msg">
-                        <div class="sent_msg">
-                            <p>{{ i.usr_msg }}</p>
-                            <span class="time_date">{{ i.time }}</span>
-                        </div>
-                    </div>
-                    <div class="incoming_msg">
-                        <div class="received_msg">
-                            <div class="received_withd_msg">
-                                <p>{{ i.usr_msg }}</p>
-                                <span class="time_date">{{ i.time }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                    {% endif %}
+<!--                    {% if rsChat %}-->
+<!--                    {% for i in rsChat %}-->
+<!--                    <div class="outgoing_msg">-->
+<!--                        <div class="sent_msg">-->
+<!--                            <p>{{ i.usr_msg }}</p>-->
+<!--                            <span class="time_date">{{ i.time }}</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="incoming_msg">-->
+<!--                        <div class="received_msg">-->
+<!--                            <div class="received_withd_msg">-->
+<!--                                <p>{{ i.usr_msg }}</p>-->
+<!--                                <span class="time_date">{{ i.time }}</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    {% endfor %}-->
+<!--                    {% endif %}-->
                 </div>
             </div>
     </div>
@@ -68,8 +68,11 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script>
+    //DB에는 msg만 저장?
     $('.msg_send_btn').click(function(){
-    var $new=$("<div class='outgoing_msg'>"+"<div class='sent_msg'>"+"<p>"+ $('#chatbox').val()+"</p>"+"</div>"+"</div>")
+    let date=new Date();
+    var date_txt=date.toLocaleTimeString();
+    var $new=$("<div class='outgoing_msg'>"+"<div class='sent_msg'>"+"<p>"+ $('#chatbox').val()+"</p>"+"<span class='time_date'>"+date_txt+"</span>"+"</div>"+"</div>")
     $('#msg_list_bx_real').append($new);
         $.ajax({
             url:"{% url 'model' %}",
@@ -77,8 +80,10 @@
             data:{'x': $('#chatbox').val()},
             dataType:'json',
             success:function(data){
-                alert(data.result);
-                var $output=$("<div class='incoming_msg'>"+"<div class='received_msg'>"+"<div class='received_withd_msg'>"+"<p>"+ data.result +"</p>"+"</div>"+"</div>"+"</div>")
+              //  alert(data.result);
+              let date_out=new Date();
+              var date_out_txt=date_out.toLocaleTimeString();
+                var $output=$("<div class='incoming_msg'>"+"<div class='received_msg'>"+"<div class='received_withd_msg'>"+"<p>"+ data.result +"</p>"+"<span class='time_date'>"+date_out_txt+"</span>"+"</div>"+"</div>"+"</div>")
                 $('#msg_list_bx_real').append($output);
             }
         })

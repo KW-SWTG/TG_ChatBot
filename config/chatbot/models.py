@@ -10,3 +10,13 @@ class Msg(models.Model):
     class Meta:
         managed = True,
         db_table = 'msg'
+
+class Qaset(models.Model):
+    cate1 = models.TextField(blank=True, null=True)
+    cate2 = models.TextField(blank=True, null=True)
+    q = models.TextField(db_column='Q', blank=True, null=True)  # Field name made lowercase.
+    a = models.TextField(db_column='A', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'qaset'
