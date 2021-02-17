@@ -88,7 +88,7 @@
     var stopBtn = document.getElementById("stopBtn");
     var textInput = document.getElementById("chatbox");
     // var player = document.getElementById("player");
-
+    var record_state=false;
 
     function hasGetUserMedia() {
         return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
@@ -161,6 +161,22 @@
         recordBtn.disabled = false;
         rec.stop();
     }
+
+    //녹음버튼
+    $('.some_btn').click(function(){
+        record_state=!record_state
+        if(record_state)
+        {
+        //녹음시작
+            $('.some_btn').css("background","red")
+
+        }
+        else if(!record_state)
+        {
+        //녹음 끝!
+            $('.some_btn').css("background", "#05728f")
+        }
+    })
 
     $('.msg_send_btn').click(function(){
     let date=new Date();
