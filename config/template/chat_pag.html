@@ -46,9 +46,6 @@
                          <td><a href="#"><button class="some_btn"><img src="{%static 'assets/img/voice_icon.png' %}"></button></a></td>
                          <td width="700" align="center"><input name="note" class="write_msg" type="text" id="chatbox" placeholder="메세지 입력"></td>
                          <td width="60" align="center"><button class="msg_send_btn" type="button"><img src="{%static 'assets/img/send_icon.png' %}"></button></td>
-                        <button id="recordBtn">Record</button>
-                        <button id="stopBtn">Stop</button>
-                        <audio id="player"></audio>
 
                     </tr>
                 </table>
@@ -58,9 +55,9 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
-     <!-- for browser compatibility.  -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/opus-media-recorder@0.8.0/OpusMediaRecorder.umd.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/opus-media-recorder@0.8.0/encoderWorker.umd.js"></script>
+     <!-- for stt browser compatibility.  -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/opus-media-recorder@0.8.0/OpusMediaRecorder.umd.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/opus-media-recorder@0.8.0/encoderWorker.umd.js"></script>
     <script>
     const workerOptions = {
         OggOpusEncoderWasmPath: 'https://cdn.jsdelivr.net/npm/opus-media-recorder@0.8.0/OggOpusEncoder.wasm',
@@ -70,10 +67,8 @@
     window.MediaRecorder = OpusMediaRecorder;
 
     //DB에는 msg만 저장?
-    var recordBtn = document.getElementById("recordBtn");
-    var stopBtn = document.getElementById("stopBtn");
     var textInput = document.getElementById("chatbox");
-    // var player = document.getElementById("player");
+    var recordBtn = document.getElementsByClassName("some_btn");
     var record_state=false;
 
     function hasGetUserMedia() {
@@ -89,7 +84,6 @@
             //disable the record button if getUserMedia() fails
             console.log(`error on access getUserMedia : ${err.message}`);
             recordBtn.disabled = true;
-            stopBtn.disabled = true;
         })
     }
     else {
@@ -104,30 +98,18 @@
             var audioBinary = [];
             audioBinary.push(e.data);
             if( rec.state == "inactive"){
+                console.log("Recording end");
                 let blob = new Blob( audioBinary, {type:'audio/ogg'});
-                player.src = URL.createObjectURL(blob);
-                console.log(player.src);
-                // player.src = "./file.webm";
-                player.controls = true;
-                player.autoplay = true;
                 sendData(blob);
             }
         }
     }
 
 
-
-    recordBtn.onclick = e=> {
-        console.log("start recording btn clicked");
-        recordBtn.disabled = true;
-        stopBtn.disabled = false;
-        rec.start();
-    }
-
     function sendData(data){
         var request = new XMLHttpRequest();
         var fd = new FormData();
-        fd.append("audio_data", data, "audiodata.ogg");
+        fd.append("audio_data", data, "audiodata");
         request.open("POST","stt/",true);
         request.onreadystatechange = function (){
             if(request.readyState == XMLHttpRequest.DONE) {
@@ -138,15 +120,8 @@
         }
         console.log("sending data to server")
         request.send(fd);
-        // request.send("asdf");
     }
 
-    stopBtn.onclick = e => {
-        console.log("stopButton clicked");
-        stopBtn.disabled = true;
-        recordBtn.disabled = false;
-        rec.stop();
-    }
 
     //녹음버튼
     $('.some_btn').click(function(){
@@ -155,12 +130,15 @@
         {
         //녹음시작
             $('.some_btn').css("background","red")
-
+            console.log("start recording btn clicked");
+            rec.start();
         }
         else if(!record_state)
         {
         //녹음 끝!
             $('.some_btn').css("background", "#05728f")
+            console.log("stopButton clicked");
+            rec.stop();
         }
     })
 
@@ -180,6 +158,8 @@
               var date_out_txt=date_out.toLocaleTimeString();
                 var $output=$("<div class='incoming_msg'>"+"<div class='received_msg'>"+"<div class='received_withd_msg'>"+"<p>"+ data.result +"</p>"+"<span class='time_date'>"+date_out_txt+"</span>"+"</div>"+"</div>"+"</div>")
                 $('#msg_list_bx_real').append($output);
+                // tts result str
+                speech(data.result);
             }
         })
     })
@@ -197,6 +177,8 @@
     }
 
     function speech(txt) {
+        console.log("trying tts")
+
         if(!window.speechSynthesis) {
             alert("browser does not support tts");
             return;
@@ -217,10 +199,9 @@
             return;
         }
 
-
         TtsObject.lang = lang;
         TtsObject.pitch = 1;
-        TtsObject.rate = 1.2; //속도
+        TtsObject.rate = 1.1; //속도
         window.speechSynthesis.speak(TtsObject);
     }
 </script>

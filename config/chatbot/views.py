@@ -61,8 +61,8 @@ def model(request):
 
 @csrf_exempt
 def stt(request):
-    # credential_path = "chatbot\chatbot-stt-b7d997126b9b.json"
-    # os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
+    credential_path = 'C:\\Users\\paramir\\Desktop\\2020_2\\졸작\\stt\\chatbot-stt-9db8f612e114.json'
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credential_path
 
     f = open("chatbot/file.ogg", 'wb')
     f.write(request.body)
@@ -87,6 +87,5 @@ def stt(request):
     resultStr = ''.join(stringList)
 
     return HttpResponse(resultStr)
-    # return HttpResponse("asdf")
 #client 접속 ip 확인하기
 
