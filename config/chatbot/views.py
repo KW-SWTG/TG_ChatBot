@@ -64,25 +64,29 @@ def FCmatching(ip):
 def SCmatching(f_keword, ip):
     flst = os.listdir("filter1_ver4")
     state = "filter1_ver4/"
+
     csvmdiclst = []
     for i in flst:
         csvmdiclst.append({"rn": i.replace(".csv", ""), "fs": state + i})
     csvmdiclst
+
     sk = ""
     for k in csvmdiclst:
         if k['rn'] == f_keword:
             sk = k['fs']
     if sk == "":
         return {"score": 0, "phrase": ""}
+
     mkcsv = pd.read_csv(sk)
     rawdata = mkcsv['paragraph']
-    # print(hyungextrac(ip))
+
     vectorize = TfidfVectorizer(
         tokenizer=hyungextrac,
         min_df=0.05,
         max_df=0.7
     )
     X = vectorize.fit_transform(rawdata)
+
     features = vectorize.get_feature_names()
     srch = [t for t in hyungextrac(ip) if t in features]
 
@@ -90,8 +94,12 @@ def SCmatching(f_keword, ip):
         vectorize.vocabulary_.get(i) for i in srch
     ]]
     score = srch_dtm.sum(axis=1)
-    # print(features)
-    # print(rawdata[np.argmax(score)])
+
+    # max score
+    print('max score : ', max(score))
+    if max(score) < 0.5:
+        return {"score": 0, "phrase": ""}
+
     return {"score": 1, "phrase": rawdata[np.argmax(score)]}
 
 
@@ -121,7 +129,7 @@ def hyungextrac(text):
             continue
         if i[0] == "션":
             continue
-        if i[1] == "NNG" or i[1] == "NNP" or i[1] == "SL" or i[1] == "VV":
+        if i[1] == "NNG" or i[1] == "NNP" or i[1] == "SL":
             morph.append(i[0])
 
     return morph
@@ -189,27 +197,27 @@ def Sear(sinput):
             try:
                 result = n2[0].select_one('.wwUB2c').text
             except:
-                result = "결과 출력 할 수 없읍니다."
+                result = "결과 출력 할 수 없습니다."
     elif len(n2) > 0:
         try:
             result = n2[0].select_one('.wwUB2c').text
         except:
-            result = "결과 출력 할 수 없읍니다."
+            result = "결과 출력 할 수 없습니다."
     elif len(n3) > 0:
         try:
             state_info = n3[0].select_one('.VQF4g').text
             degree = n3[0].select_one('.TylWce').span.text
             result = state_info + " "+degree+"'C"
         except:
-            result = "결과 출력 할 수 없읍니다."
+            result = "결과 출력 할 수 없습니다."
     elif len(n4) > 0:
         try:
             for i in n4:
                 result += i.select_one('.dbg0pd').text + "\n"
         except:
-            print("결과 출력 할 수 없읍니다.")
+            print("결과 출력 할 수 없습니다.")
     else:
-        result = "결과 출력 할 수 없읍니다."
+        result = "결과 출력 할 수 없습니다."
 
     driver.close()
     return result
