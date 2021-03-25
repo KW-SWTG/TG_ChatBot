@@ -26,7 +26,7 @@ SECRET_KEY = ')ph0(6f3(1*gd&mda!&hx5pmxrk0-8!1z$&xu3eofplqmvpye$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ '*', ]
+ALLOWED_HOSTS = ['*', ]
 
 
 # Application definition
@@ -78,9 +78,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'chatb',
+        'NAME': 'Chatb',
         'USER': 'root',
-        'PASSWORD': '7238',
+        'PASSWORD': '1234',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -127,4 +127,3 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-
