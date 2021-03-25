@@ -158,8 +158,12 @@
               var date_out_txt=date_out.toLocaleTimeString();
                 var $output=$("<div class='incoming_msg'>"+"<div class='received_msg'>"+"<div class='received_withd_msg'>"+"<p>"+ data.result +"</p>"+"<span class='time_date'>"+date_out_txt+"</span>"+"</div>"+"</div>"+"</div>")
                 $('#msg_list_bx_real').append($output);
+
                 // tts result str
-                speech(data.result);
+                speech(data.result)
+
+                // chatbox 초기화
+                $('#chatbox').val("");;
             }
         })
     })
