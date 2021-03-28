@@ -72,9 +72,9 @@ img{ max-width:100%;}
  }
  .received_withd_msg p {
   background: #ebebeb none repeat scroll 0 0;
-  border-radius: 3px;
+  border-radius: 7px;
   color: #646464;
-  font-size: 14px;
+  font-size: 20px;
   margin: 0;
   padding: 5px 10px 5px 12px;
   width: 100%;
@@ -82,10 +82,12 @@ img{ max-width:100%;}
 .time_date {
   color: #747474;
   display: block;
-  font-size: 12px;
+  font-size: 16px;
   margin: 8px 0 0;
 }
-.received_withd_msg { width: 57%;}
+.received_withd_msg {
+  width: 57%;
+  }
 .mesgs {
   float: left;
   padding: 30px 15px 0 25px;
@@ -107,8 +109,8 @@ div.msg_history::-webkit-scrollbar-track {
 }
 .sent_msg p{
   background: #05728f none repeat scroll 0 0;
-  border-radius: 3px;
-  font-size: 14px;
+  border-radius: 7px;
+  font-size: 20px;
   margin: 0; color:#fff;
   padding: 5px 10px 5px 12px;
   width:100%;
@@ -123,7 +125,7 @@ div.msg_history::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
   border: medium none;
   color: #4c4c4c;
-  font-size: 15px;
+  font-size: 20px;
   min-height: 48px;
   width: 580px;
 }

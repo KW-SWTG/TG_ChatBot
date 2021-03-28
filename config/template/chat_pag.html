@@ -122,7 +122,6 @@
         request.send(fd);
     }
 
-
     //녹음버튼
     $('.some_btn').click(function(){
         record_state=!record_state
@@ -142,11 +141,19 @@
         }
     })
 
-    $('.msg_send_btn').click(function(){
-    let date=new Date();
-    var date_txt=date.toLocaleTimeString();
-    var $new=$("<div class='outgoing_msg'>"+"<div class='sent_msg'>"+"<p>"+ $('#chatbox').val()+"</p>"+"<span class='time_date'>"+date_txt+"</span>"+"</div>"+"</div>")
-    $('#msg_list_bx_real').append($new);
+     function msg_send_fnc()
+    {
+        if($('#chatbox').val()=="")
+        {
+            alert("내용을 입력해주세요")
+        }
+        else{
+        let date=new Date();
+        var date_txt=date.toLocaleTimeString();
+        var $new=$("<div class='outgoing_msg'>"+"<div class='sent_msg'>"+"<p>"+ $('#chatbox').val()+"</p>"+"<span class='time_date'>"+date_txt+"</span>"+"</div>"+"</div>")
+        console.log($('.msg_history')[0].scrollHeight);
+
+        $('#msg_list_bx_real').append($new);
         $.ajax({
             url:"{% url 'model' %}",
             type:"POST",
@@ -158,14 +165,27 @@
               var date_out_txt=date_out.toLocaleTimeString();
                 var $output=$("<div class='incoming_msg'>"+"<div class='received_msg'>"+"<div class='received_withd_msg'>"+"<p>"+ data.result +"</p>"+"<span class='time_date'>"+date_out_txt+"</span>"+"</div>"+"</div>"+"</div>")
                 $('#msg_list_bx_real').append($output);
+                $('.msg_history').scrollTop($('.msg_history')[0].scrollHeight);
 
                 // tts result str
-                speech(data.result)
+                speech(data.result);
+                   }
+            })
+            $('.msg_history').scrollTop($('.msg_history')[0].scrollHeight);
+            $('#chatbox').val("");
 
-                // chatbox 초기화
-                $('#chatbox').val("");;
-            }
-        })
+
+        }
+
+    }
+
+    $(document).keydown(function(e){
+        if(e.keyCode == '13'){
+            msg_send_fnc();
+        }
+    })
+    $('.msg_send_btn').click(function(){
+        msg_send_fnc();
     })
     </script>
 
