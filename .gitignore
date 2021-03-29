@@ -155,9 +155,9 @@ chatbot-stt-9db8f612e114.json
 config/JPype1-1.2.0-cp37-cp37m-win_amd64.whl
 config/JPype1-1.2.0-cp38-cp38-win_amd64.whl
 config/QAset.xlsx
-config/VV_sg_100_3_5.model
-config/VV_sg_100_3_5.model.trainables.vectors_ngrams_lockf.npy
-config/VV_sg_100_3_5.model.wv.vectors_ngrams.npy
+config/nVV_sg_400_3_5.model
+config/nVV_sg_400_3_5.model.trainables.vectors_ngrams_lockf.npy
+config/nVV_sg_400_3_5.model.wv.vectors_ngrams.npy
 filter1_ver4.zip
 readme.txt
 searchB.zip

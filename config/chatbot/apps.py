@@ -11,7 +11,7 @@ import json
 class ChatbotConfig(AppConfig):
     name = 'chatbot'
     komoran = Komoran()
-    fmodel = FastText.load("VV_sg_100_3_5.model")
+    fmodel = FastText.load("nVV_sg_400_3_5.model")
 
     def hyapi(Q):
         key = '5d8c5655-dfcc-4eff-9eda-9c4b959603af'

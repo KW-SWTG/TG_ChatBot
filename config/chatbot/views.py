@@ -180,7 +180,8 @@ def Sear(sinput):
     plusUrl = sinput
     url = baseUrl + quote_plus(plusUrl)
 
-    driver = webdriver.Chrome(executable_path='C://wdb/chromedriver.exe')
+    #driver = webdriver.Chrome(executable_path='C://wdb/친구6edriver.exe')
+    driver = webdriver.Chrome(executable_path="C://Users//jeewo//Downloads//chromedriver_win32//chromedriver.exe")
     driver.get(url)
 
     html = driver.page_source
