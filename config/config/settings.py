@@ -78,11 +78,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'chatdb',
+        'NAME': 'Chatb',
         'USER': 'root',
-        'PASSWORD': 'wldn1925@',
+        'PASSWORD': '1234',
         'HOST': '127.0.0.1',
-        'PORT': '8888',
+        'PORT': '3306',
     }
 }
 
