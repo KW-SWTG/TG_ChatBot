@@ -7,6 +7,14 @@ const workerOptions = {
     //polyfill mediarecorder.
     window.MediaRecorder = OpusMediaRecorder;
 
+    //for audio visualization
+    var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var analyser = audioCtx.createAnalyser();
+    var source;
+    var canvas = document.getElementsByClassName("visualizer");
+    var canvasCtx = canvas[0].getContext("2d");
+    var drawVisual;
+
     //DB에는 msg만 저장?
     var textInput = document.getElementById("chatbox");
     var recordBtn = document.getElementsByClassName("some_btn");
@@ -20,7 +28,13 @@ const workerOptions = {
     if (hasGetUserMedia() ){
         var constraints = { audio:true, video:false }
         navigator.mediaDevices.getUserMedia(constraints)
-        .then(stream => {streamHandlerFunction(stream)})
+        .then(stream => {
+            source = audioCtx.createMediaStreamSource(stream);
+            source.connect(analyser);
+            analyser.connect(audioCtx.destination);
+
+            streamHandlerFunction(stream);
+        })
         .catch(function(err) {
             //disable the record button if getUserMedia() fails
             console.log(`error on access getUserMedia : ${err.message}`);
@@ -31,6 +45,44 @@ const workerOptions = {
         console.log("cant access getUserMedia");
     }
 
+    function visualize(){
+        var height = canvas[0].height;
+        var width = canvas[0].width;
+
+        analyser.fftSize = 256;
+        var bufferLength = analyser.frequencyBinCount;
+        // console.log("bufferLength: ");
+        // console.log(bufferLength);
+        var dataArray = new Uint8Array(bufferLength);
+
+        canvasCtx.clearRect(0, 0, width, height);
+
+        var draw = function() {
+            drawVisual = requestAnimationFrame(draw);
+
+            analyser.getByteFrequencyData(dataArray);
+            // console.log(dataArray);
+
+            canvasCtx.fillStyle = 'rgb(255, 255, 255)';
+            canvasCtx.fillRect(0, 0, width, height);
+
+            var barWidth = width;
+            var sum=0;
+            for (var i = 0; i < bufferLength; i++){
+                // console.log(dataArray[i]);
+                sum+=dataArray[i];
+            }
+            // console.log(sum);
+            var barHeight = sum / bufferLength / 2;
+
+            // console.log("bar height: ");
+            // console.log(barHeight);
+
+            canvasCtx.fillStyle = 'rgb(255,0,0)';
+            canvasCtx.fillRect( 0, height-barHeight, width, barHeight);
+        }
+        draw();
+    }
 
     function streamHandlerFunction(stream) {
         rec = new MediaRecorder(stream, {mimeType : 'audio/ogg'},workerOptions);
@@ -71,13 +123,17 @@ const workerOptions = {
         //녹음시작
             $('.some_btn').css("background","red")
             console.log("start recording btn clicked");
+            visualize();
             rec.start();
         }
         else if(!record_state)
         {
-        //녹음 끝!
+        //녹음 끝
             $('.some_btn').css("background", "#05728f")
             console.log("stopButton clicked");
+            window.cancelAnimationFrame(drawVisual);
+            canvasCtx.fillStyle = 'rgb(255, 255, 255)';
+            canvasCtx.fillRect(0, 0, canvas[0].width, canvas[0].height);
             rec.stop();
         }
     })
