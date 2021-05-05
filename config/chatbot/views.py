@@ -83,7 +83,7 @@ def SCmatching(f_keword, ip):
     vectorize = TfidfVectorizer(
         tokenizer=hyungextrac,
         min_df=0.05,
-        max_df=0.7
+        max_df=1.0
     )
     X = vectorize.fit_transform(rawdata)
 
@@ -97,7 +97,7 @@ def SCmatching(f_keword, ip):
 
     # max score
     print('max score : ', max(score))
-    if max(score) < 0.5:
+    if max(score) < 0.54:
         return {"score": 0, "phrase": ""}
 
     return {"score": 1, "phrase": rawdata[np.argmax(score)]}
