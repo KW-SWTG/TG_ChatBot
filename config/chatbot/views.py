@@ -23,7 +23,8 @@ from selenium import webdriver
 komoran = ChatbotConfig.komoran
 f_model = ChatbotConfig.fmodel
 twitter = Twitter()
-
+b_model = ChatbotConfig.bmodel
+ktok = ChatbotConfig.btokenizer
 
 def home(request):
     return render(request, "home.html")
@@ -175,6 +176,7 @@ def mrc(ip, para):
     return ttemp
 
 
+
 def Sear(sinput):
     baseUrl = 'https://www.google.com/search?q='
     plusUrl = sinput
@@ -232,7 +234,11 @@ def model(request):
     print(s_mdict)
 
     if s_mdict['score'] == 1:
-        result = mrc(inputphrase, s_mdict['phrase'])
+        result = ChatbotConfig.answering(inputphrase, s_mdict['phrase'],b_model,ktok)
+        if result == "":
+            result = hybrida(inputphrase)
+            if result == "답변을 출력할 수 없습니다.":
+                result = Sear(inputphrase)
     else:
         result = hybrida(inputphrase)
         if result == "답변을 출력할 수 없습니다.":

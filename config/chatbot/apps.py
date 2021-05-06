@@ -6,12 +6,49 @@ from gensim.models import FastText
 import requests
 import urllib3
 import json
+from transformers import BertModel
+from transformers import BertForQuestionAnswering
+from tokenization_kobert import *
+import torch
 
 
 class ChatbotConfig(AppConfig):
     name = 'chatbot'
     komoran = Komoran()
-    fmodel = FastText.load("nVV_sg_400_3_5.model")
+    fmodel = FastText.load("400_5_4.model")
+    bmodel = BertForQuestionAnswering.from_pretrained('models/checkpoint-24000/')
+    btokenizer = KoBertTokenizer.from_pretrained('models/checkpoint-24000/')
+
+    def answering(question,context,model,stoknizer):
+        input_ids = stoknizer.encode(question,context)
+        tokens = stoknizer.convert_ids_to_tokens(input_ids)
+        if len(tokens)>512:
+            return ""
+        # 입력 임베딩 길이 초과
+
+        tokens = stoknizer.convert_ids_to_tokens(input_ids)
+        sep_index = input_ids.index(stoknizer.sep_token_id)
+
+        # [SEP] 토큰 기준으로 질의, 문단 위치 파악
+        num_seg_a = sep_index + 1
+        num_seg_b = len(input_ids) - num_seg_a
+
+        segment_ids = [0]*num_seg_a + [1]*num_seg_b
+
+        # segment 토큰 반영
+        assert len(segment_ids) == len(input_ids)
+        start_scores, end_scores = model(torch.tensor([input_ids]),token_type_ids=torch.tensor([segment_ids]))
+        # 시작 종료위치 계산
+        answer_start = torch.argmax(start_scores)
+        answer_end = torch.argmax(end_scores)
+
+        # 가장 높은 확률의 토큰 위치 반환
+        answer = ''.join(tokens[answer_start:answer_end+1])
+        if len(answer) > 1:
+            answer=answer[1:]
+        # 시작 공백 문자 제거
+        return answer.replace(" ","").replace("▁"," ")
+
 
     def hyapi(Q):
         key = '5d8c5655-dfcc-4eff-9eda-9c4b959603af'
