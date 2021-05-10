@@ -31,7 +31,7 @@ const workerOptions = {
         .then(stream => {
             source = audioCtx.createMediaStreamSource(stream);
             source.connect(analyser);
-            analyser.connect(audioCtx.destination);
+            //analyser.connect(audioCtx.destination);
 
             streamHandlerFunction(stream);
         })
@@ -154,7 +154,7 @@ const workerOptions = {
 ////////*---------챗봇 답변 with 로딩---------*///////////
         $('#msg_list_bx_real').append($new);
         name_id="id_s"+count;
-        $('#msg_list_bx_real').append("<div class='incoming_msg'><div class='received_msg'><div class='received_withd_msg' id="+name_id+"><div class='loader_box'><div class='loader10'></div></div></div></div></div>");
+        $('#msg_list_bx_real').append("<div class='incoming_msg'><img src=\"static/assets/img/robot.png\" class='robot_img' width=\"8%\"><div class='received_msg'><div class='received_withd_msg' id="+name_id+"><div class='loader_box'><div class='loader10'></div></div></div></div></div>");
         $('.msg_history').scrollTop($('.msg_history')[0].scrollHeight);
         $('#chatbox').attr("disabled",true);
         $.ajax({
