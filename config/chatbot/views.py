@@ -250,6 +250,7 @@ def model(request):
 
 @csrf_exempt
 def stt(request):
+    # put api key to directory that manage.py places
     credential_path = '..//chatbot-stt-9db8f612e114.json'
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credential_path
 

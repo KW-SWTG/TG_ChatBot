@@ -45,6 +45,7 @@ const workerOptions = {
         console.log("cant access getUserMedia");
     }
 
+
     function visualize(){
         var height = canvas[0].height;
         var width = canvas[0].width;
@@ -236,5 +237,3 @@ const workerOptions = {
         TtsObject.rate = 1.1; //속도
         window.speechSynthesis.speak(TtsObject);
     }
-
-}
