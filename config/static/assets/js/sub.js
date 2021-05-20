@@ -169,9 +169,6 @@ const workerOptions = {
               $('.msg_history').scrollTop($('.msg_history')[0].scrollHeight);
             },
             success:function(data){
-              //alert(data.result);
-              //let date_out=new Date();
-              //var date_out_txt=date_out.toLocaleTimeString();
               $('.loader_box').remove();
               $('#'+name_id).append("<p>"+data.result+"</p>");
               $('.msg_history').scrollTop($('.msg_history')[0].scrollHeight);
