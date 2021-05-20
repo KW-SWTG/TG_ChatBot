@@ -1,5 +1,4 @@
 from django.shortcuts import render
-#from .models import Msg, Qaset
 from django.shortcuts import redirect
 import numpy as np
 from .apps import ChatbotConfig
@@ -31,28 +30,10 @@ def home(request):
 
 
 def chatbot(request):
-    #rsChat = Msg.objects.all()
     return render(request, "chat_pag.html",
                   {
                       'rsChat': "some"
                   })
-
-#
-# def chat_insert(request):
-#     cnote = request.GET['note']
-#     if cnote != "":
-#         rows = Msg.objects.create(usr_msg=cnote,)
-#         # con_msg=ChatbotConfig.example(cnote);
-#         # print(con_msg);
-#         return redirect('/chatbot')
-#     else:
-#         return redirect('/chatbot')
-
-#
-# def chat_delete(request):
-#     rows = Msg.objects.all()
-#     delete = rows.delete()
-#     return render(request, "chat_pag.html",)
 
 
 def FCmatching(ip):
