@@ -10,6 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 from sklearn.metrics.pairwise import linear_kernel, cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from google.cloud import speech
+from google.auth.exceptions import DefaultCredentialsError
+import logging
 import io
 import os
 from konlpy.tag import Twitter
@@ -237,24 +239,28 @@ def stt(request):
     f = open("chatbot/file.ogg", 'wb')
     f.write(request.body)
     f.close()
-
-    client = speech.SpeechClient()
     with io.open("chatbot/file.ogg", "rb") as audio_file:
         content = audio_file.read()
 
-    audio = speech.RecognitionAudio(content=content)
-    config = speech.RecognitionConfig(
-        encoding=speech.RecognitionConfig.AudioEncoding.OGG_OPUS,
-        sample_rate_hertz=48000,
-        language_code="ko-KR",
-    )
+    try:
+        client = speech.SpeechClient()
+        audio = speech.RecognitionAudio(content=content)
+        config = speech.RecognitionConfig(
+            encoding=speech.RecognitionConfig.AudioEncoding.OGG_OPUS,
+            sample_rate_hertz=48000,
+            language_code="ko-KR",
+        )
 
-    response = client.recognize(config=config, audio=audio)
+        response = client.recognize(config=config, audio=audio)
 
-    stringList = []
-    for result in response.results:
-        stringList.append(result.alternatives[0].transcript)
-    resultStr = ''.join(stringList)
+        stringList = []
+        for result in response.results:
+            stringList.append(result.alternatives[0].transcript)
+        resultStr = ''.join(stringList)
+        
+    except DefaultCredentialsError:
+        logging.warning('DefaultCredentaials error. check api key')
+        resultStr = "error: DefaultCredentalsError"    
 
     return HttpResponse(resultStr)
 # client 접속 ip 확인하기
