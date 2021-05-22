@@ -388,6 +388,7 @@ const workerOptions = {
         }
 
         else{
+        var startTime=new Date().getTime();//시간 측정//
         let date=new Date();
         var date_txt=date.toLocaleTimeString();
         var $new=$("<div class='outgoing_msg'>"+"<div class='sent_msg'>"+"<p>"+ $('#chatbox').val()+"</p>"+"<span class='time_date'>"+date_txt+"</span>"+"</div>"+"</div>")
@@ -410,11 +411,13 @@ const workerOptions = {
               $('.msg_history').scrollTop($('.msg_history')[0].scrollHeight);
             },
             success:function(data){
+              var endTime-new Date().getTime();//시간 측정//
               $('.loader_box').remove();
               $('#'+name_id).append("<p>"+data.result+"</p>");
               $('.msg_history').scrollTop($('.msg_history')[0].scrollHeight);
                // tts result str
                speech(data.result);
+               console.log(endTime-startTime);//시간 측정//
             },
             complete:function(){
                 $('#chatbox').attr("disabled",false);
