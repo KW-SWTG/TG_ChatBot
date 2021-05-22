@@ -257,10 +257,12 @@ def stt(request):
         for result in response.results:
             stringList.append(result.alternatives[0].transcript)
         resultStr = ''.join(stringList)
-        
+
     except DefaultCredentialsError:
         logging.warning('DefaultCredentaials error. check api key')
-        resultStr = "error: DefaultCredentalsError"    
-
-    return HttpResponse(resultStr)
+        resultStr = "stt 오류입니다. 관리자에게 문의하세요 (DefaultCredentalsError)"
+    else:
+        resultStr = "undefined error. 관리자에게 문의하세요"      
+    finally:
+        return HttpResponse(resultStr)
 # client 접속 ip 확인하기
