@@ -10,28 +10,13 @@
     {% include 'navbar.html' %}
 <main id="main">
 <div id="bodybox">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
     <link href="{%static 'assets/css/new.css' %}" rel="stylesheet" type="text/css">
     <div id="msg_list_bx">
             <div class="mesgs">
                 <div class="msg_history" id="msg_list_bx_real">
-<!--                    {% if rsChat %}-->
-<!--                    {% for i in rsChat %}-->
-<!--                    <div class="outgoing_msg">-->
-<!--                        <div class="sent_msg">-->
-<!--                            <p>{{ i.usr_msg }}</p>-->
-<!--                            <span class="time_date">{{ i.time }}</span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="incoming_msg">-->
-<!--                        <div class="received_msg">-->
-<!--                            <div class="received_withd_msg">-->
-<!--                                <p>{{ i.usr_msg }}</p>-->
-<!--                                <span class="time_date">{{ i.time }}</span>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    {% endfor %}-->
-<!--                    {% endif %}-->
+
                 </div>
             </div>
     </div>
@@ -41,10 +26,10 @@
             <div class="input_msg_write">
                 <table>
                     <tr>
-                         <td><canvas class="visualizer" width="7" height="45"></canvas></td>
-                         <td><a href="#"><button class="some_btn"><img src="{%static 'assets/img/voice_icon.png' %}"></button></a></td>
+                         <td><canvas class="visualizer" width="15" height="45"></canvas></td>
+                         <td width="60"><a href="#"><button class="some_btn"><img src="{%static 'assets/img/voice_icon.png' %}" width=88%></button></a></td>
                          <td width="700" align="center"><input name="note" class="write_msg" type="text" id="chatbox" placeholder="메세지 입력"></td>
-                         <td width="60" align="center"><button class="msg_send_btn" type="button"><img src="{%static 'assets/img/send_icon.png' %}"></button></td>
+                         <td width="60" align="center"><button class="msg_send_btn" type="button"><img src="{%static 'assets/img/send_icon.png' %}" width=102%></button></td>
 
                     </tr>
                 </table>

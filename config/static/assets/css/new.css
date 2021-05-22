@@ -1,11 +1,11 @@
-
 #bodybox{
   margin-top: 128px;
   margin-bottom: 45px;
   margin-left: auto;
   margin-right: auto;
   max-width: 744px;
-  font: 15px arial, sans-serif;
+  font-family: 'Nanum Gothic', sans-serif;
+  font-size: 15px;
   background-color: white;
   border-style: solid;
   border-width: 1px;
@@ -16,47 +16,11 @@
   border-radius: 15px;
 }
 
-#chatborder {
-  border-style: solid;
-  background-color: #f6f9f6;
-  border-width: 3px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
-  padding-top: 10px;
-  padding-bottom: 15px;
-  padding-right: 20px;
-  padding-left: 15px;
-  border-radius: 15px;
-}
-
-.chatlog {
-   font: 15px arial, sans-serif;
-}
-
-h1 {
-  margin: auto;
-}
-
-pre {
-  background-color: #f0f0f0;
-  margin-left: 20px;
-}
-
-
-
-
 
 
 .container{max-width:1170px; margin:auto;}
-img{ max-width:100%;}
-.inbox_people {
-  background: #f8f8f8 none repeat scroll 0 0;
-  float: left;
-  overflow: hidden;
-  width: 40%; border-right:1px solid #c4c4c4;
-}
+
+
 .inbox_msg {
   border: 1px solid #c4c4c4;
   clear: both;
@@ -65,19 +29,12 @@ img{ max-width:100%;}
 .top_spac{ margin: 20px 0 0;}
 
 
-.recent_heading {float: left; width:40%;}
 .srch_bar {
   display: inline-block;
   text-align: right;
   width: 60%; padding:
 }
-.headind_srch{ padding:10px 29px 10px 20px; overflow:hidden; border-bottom:1px solid #c4c4c4;}
 
-.recent_heading h4 {
-  color: #05728f;
-  font-size: 21px;
-  margin: auto;
-}
 .srch_bar input{ border:1px solid #cdcdcd; border-width:0 0 1px 0; width:80%; padding:2px 0 4px 6px; background:none;}
 .srch_bar .input-group-addon button {
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
@@ -88,28 +45,6 @@ img{ max-width:100%;}
 }
 .srch_bar .input-group-addon { margin: 0 0 0 -27px;}
 
-.chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}
-.chat_ib h5 span{ font-size:13px; float:right;}
-.chat_ib p{ font-size:14px; color:#989898; margin:auto}
-.chat_img {
-  float: left;
-  width: 11%;
-}
-.chat_ib {
-  float: left;
-  padding: 0 0 0 15px;
-  width: 88%;
-}
-
-.chat_people{ overflow:hidden; clear:both;}
-.chat_list {
-  border-bottom: 1px solid #c4c4c4;
-  margin: 0;
-  padding: 18px 16px 10px;
-}
-.inbox_chat { height: 550px; overflow-y: scroll;}
-
-.active_chat{ background:#ebebeb;}
 
 .incoming_msg_img {
   display: inline-block;
@@ -123,7 +58,7 @@ img{ max-width:100%;}
  }
  .received_withd_msg p {
   background: #ebebeb none repeat scroll 0 0;
-  border-radius: 7px;
+  border-radius: 10px;
   color: #646464;
   font-size: 17px;
   margin: 0;
@@ -159,9 +94,9 @@ div.msg_history::-webkit-scrollbar-track {
     background-color: none;
 }
 .sent_msg p{
-  background: #05728f none repeat scroll 0 0;
-  border-radius: 7px;
-  font-size: 20px;
+  background: #3c9ffd none repeat scroll 0 0;
+  border-radius: 10px;
+  font-size: 17px;
   margin: 0; color:#fff;
   padding: 5px 10px 5px 12px;
   width:100%;
@@ -178,7 +113,7 @@ div.msg_history::-webkit-scrollbar-track {
   color: #4c4c4c;
   font-size: 20px;
   min-height: 48px;
-  width: 580px;
+  width: 100%;
 }
 
 .type_msg {border-top: 1px solid #c4c4c4;position: relative;}
@@ -200,11 +135,10 @@ div.msg_history::-webkit-scrollbar-track {
   border-radius: 50%;
   color: #fff;
   cursor: pointer;
-  font-size: 17px;
-  height: 36px;
+  height: 45px;
   right: 0;
   top: 11px;
-  width: 36px;
+  width: 45px;
 }
 .some_btn{
   background: #05728f none repeat scroll 0 0;
@@ -229,7 +163,7 @@ div.msg_history::-webkit-scrollbar-track {
 /*----------채팅 로딩 바 loader class-------*/
 .loader_box{
     background: #ebebeb none repeat scroll 0 0;
-    border-radius: 7px;
+    border-radius: 10px;
     color: #646464;
     height: 80px;
     padding: 5px 10px 5px 12px;
@@ -271,6 +205,8 @@ div.msg_history::-webkit-scrollbar-track {
   -webkit-animation: loader10d 3s ease-in-out infinite;
       animation: loader10d 3s ease-in-out infinite;
 }
+
+
 
 @-webkit-keyframes loader10g{
   25%{background-color: rgba(77,77,77, 2);}

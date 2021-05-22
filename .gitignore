@@ -158,6 +158,8 @@ config/QAset.xlsx
 config/nVV_sg_400_3_5.model
 config/nVV_sg_400_3_5.model.trainables.vectors_ngrams_lockf.npy
 config/nVV_sg_400_3_5.model.wv.vectors_ngrams.npy
+
+
 filter1_ver4.zip
 readme.txt
 searchB.zip
@@ -168,7 +170,7 @@ config/400_5_4.model
 config/400_5_4.model.trainables.vectors_ngrams_lockf.npy
 config/400_5_4.model.wv.vectors_ngrams.npy
 config/modelTrain_Test.zip
-
+config/chatbot/file.ogg
 
 
 # End of https://www.toptal.com/developers/gitignore/api/python
