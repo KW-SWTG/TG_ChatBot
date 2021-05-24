@@ -171,6 +171,7 @@ config/400_5_4.model.trainables.vectors_ngrams_lockf.npy
 config/400_5_4.model.wv.vectors_ngrams.npy
 config/modelTrain_Test.zip
 config/chatbot/file.ogg
+sa-spoiler-4897b3e764af.json
 
 
 # End of https://www.toptal.com/developers/gitignore/api/python

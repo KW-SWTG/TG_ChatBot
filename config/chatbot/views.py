@@ -26,6 +26,8 @@ f_model = ChatbotConfig.fmodel
 twitter = Twitter()
 b_model = ChatbotConfig.bmodel
 ktok = ChatbotConfig.btokenizer
+vectorzier_keys = ChatbotConfig.load_vectorlizer()
+
 
 def home(request):
     return render(request, "home.html")
@@ -46,36 +48,11 @@ def FCmatching(ip):
 
 
 def SCmatching(f_keword, ip):
-    flst = os.listdir("filter1_ver4")
-    state = "filter1_ver4/"
-
-    csvmdiclst = []
-    for i in flst:
-        csvmdiclst.append({"rn": i.replace(".csv", ""), "fs": state + i})
-    csvmdiclst
-
-    sk = ""
-    for k in csvmdiclst:
-        if k['rn'] == f_keword:
-            sk = k['fs']
-    if sk == "":
-        return {"score": 0, "phrase": ""}
-
-    mkcsv = pd.read_csv(sk)
-    rawdata = mkcsv['paragraph']
-
-    vectorize = TfidfVectorizer(
-        tokenizer=hyungextrac,
-        min_df=0.05,
-        max_df=1.0
-    )
-    X = vectorize.fit_transform(rawdata)
-
-    features = vectorize.get_feature_names()
+    features = vectorzier_keys[f_keword]['vec'].get_feature_names()
     srch = [t for t in hyungextrac(ip) if t in features]
 
-    srch_dtm = np.asarray(X.toarray())[:, [
-        vectorize.vocabulary_.get(i) for i in srch
+    srch_dtm = np.asarray(vectorzier_keys[f_keword]['X'].toarray())[:, [
+        vectorzier_keys[f_keword]['vec'].vocabulary_.get(i) for i in srch
     ]]
     score = srch_dtm.sum(axis=1)
 
@@ -84,7 +61,7 @@ def SCmatching(f_keword, ip):
     if max(score) < 0.54:
         return {"score": 0, "phrase": ""}
 
-    return {"score": 1, "phrase": rawdata[np.argmax(score)]}
+    return {"score": 1, "phrase": vectorzier_keys[f_keword]['raw'][np.argmax(score)]}
 
 
 def tokenizer(raw, pos=["Noun", "Alpha", "Verb", "Number"], stopword=[]):
@@ -159,14 +136,14 @@ def mrc(ip, para):
     return ttemp
 
 
-
 def Sear(sinput):
     baseUrl = 'https://www.google.com/search?q='
     plusUrl = sinput
     url = baseUrl + quote_plus(plusUrl)
 
     #driver = webdriver.Chrome(executable_path='C://wdb/친구6edriver.exe')
-    driver = webdriver.Chrome(executable_path="C://Users//jeewo//Downloads//chromedriver_win32//chromedriver.exe")
+    driver = webdriver.Chrome(
+        executable_path="C://Users//jeewo//Downloads//chromedriver_win32//chromedriver.exe")
     driver.get(url)
 
     html = driver.page_source
@@ -217,15 +194,12 @@ def model(request):
     print(s_mdict)
 
     if s_mdict['score'] == 1:
-        result = ChatbotConfig.answering(inputphrase, s_mdict['phrase'],b_model,ktok)
+        result = ChatbotConfig.answering(
+            inputphrase, s_mdict['phrase'], b_model, ktok)
         if result == "":
             result = hybrida(inputphrase)
-            if result == "답변을 출력할 수 없습니다.":
-                result = Sear(inputphrase)
     else:
         result = hybrida(inputphrase)
-        if result == "답변을 출력할 수 없습니다.":
-            result = Sear(inputphrase)
 
     context = {'result': result}
     return HttpResponse(json.dumps(context), content_type="application/json")
@@ -233,7 +207,7 @@ def model(request):
 
 @csrf_exempt
 def stt(request):
-    credential_path = '..//chatbot-stt-9db8f612e114.json'
+    credential_path = '..//sa-spoiler-4897b3e764af.json'
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credential_path
 
     f = open("chatbot/file.ogg", 'wb')
@@ -262,7 +236,7 @@ def stt(request):
         logging.warning('DefaultCredentaials error. check api key')
         resultStr = "stt 오류입니다. 관리자에게 문의하세요 (DefaultCredentalsError)"
     else:
-        resultStr = "undefined error. 관리자에게 문의하세요"      
+        resultStr = "undefined error. 관리자에게 문의하세요"
     finally:
         return HttpResponse(resultStr)
 # client 접속 ip 확인하기

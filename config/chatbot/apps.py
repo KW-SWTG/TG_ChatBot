@@ -8,25 +8,55 @@ import urllib3
 import json
 from transformers import BertModel
 from transformers import BertForQuestionAnswering
+from sklearn.metrics.pairwise import linear_kernel, cosine_similarity
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from tokenization_kobert import *
 import torch
+import pandas as pd
+import numpy as np
+import re
+
+komoran = Komoran()
+
+
+def hyungextrac(text):
+    temp = text
+    if "샵" in temp:
+        temp, a = re.subn('샵', '숍', temp)
+    if "1회용품" in temp:
+        temp, a = re.subn('1회', '일회', temp)
+    temp = temp.replace("\n", " ")
+    pos = komoran.pos(temp)
+    morph = []
+    for i in pos:
+        if i[0] == "펜":
+            morph.append("펜션")
+            continue
+        if i[0] == "션":
+            continue
+        if i[1] == "NNG" or i[1] == "NNP" or i[1] == "SL":
+            morph.append(i[0])
+
+    return morph
 
 
 class ChatbotConfig(AppConfig):
     name = 'chatbot'
     komoran = Komoran()
     fmodel = FastText.load("400_5_4.model")
-    bmodel = BertForQuestionAnswering.from_pretrained('models/checkpoint-24000/')
+    bmodel = BertForQuestionAnswering.from_pretrained(
+        'models/checkpoint-24000/')
     btokenizer = KoBertTokenizer.from_pretrained('models/checkpoint-24000/')
 
-    def answering(question,context,model,stoknizer):
-        input_ids = stoknizer.encode(question,context)
+    def answering(question, context, model, stoknizer):
+        input_ids = stoknizer.encode(question, context)
         tokens = stoknizer.convert_ids_to_tokens(input_ids)
-        if len(tokens)>512:
+        if len(tokens) > 512:
+            del input_ids[512:]
+            del tokens[512:]
             return ""
         # 입력 임베딩 길이 초과
 
-        tokens = stoknizer.convert_ids_to_tokens(input_ids)
         sep_index = input_ids.index(stoknizer.sep_token_id)
 
         # [SEP] 토큰 기준으로 질의, 문단 위치 파악
@@ -37,7 +67,8 @@ class ChatbotConfig(AppConfig):
 
         # segment 토큰 반영
         assert len(segment_ids) == len(input_ids)
-        start_scores, end_scores = model(torch.tensor([input_ids]),token_type_ids=torch.tensor([segment_ids]))
+        start_scores, end_scores = model(torch.tensor(
+            [input_ids]), token_type_ids=torch.tensor([segment_ids]))
         # 시작 종료위치 계산
         answer_start = torch.argmax(start_scores)
         answer_end = torch.argmax(end_scores)
@@ -45,10 +76,9 @@ class ChatbotConfig(AppConfig):
         # 가장 높은 확률의 토큰 위치 반환
         answer = ''.join(tokens[answer_start:answer_end+1])
         if len(answer) > 1:
-            answer=answer[1:]
+            answer = answer[1:]
         # 시작 공백 문자 제거
-        return answer.replace(" ","").replace("▁"," ")
-
+        return answer.replace(" ", "").replace("▁", " ")
 
     def hyapi(Q):
         key = '5d8c5655-dfcc-4eff-9eda-9c4b959603af'
@@ -125,3 +155,28 @@ class ChatbotConfig(AppConfig):
         for i in flst:
             category.append(i.replace(".csv", ""))
         return category
+
+    def load_vectorlizer():
+        rawdata = []
+        flst = os.listdir("filter1_ver4")
+        category = []
+        for i in flst:
+            category.append(i.replace(".csv", ""))
+        csvmdiclst = []
+        for i in flst:
+            csvmdiclst.append(
+                {"rn": i.replace(".csv", ""), "fs": "filter1_ver4/" + i})
+        keyvec = {}
+        for k in csvmdiclst:
+            mkcsv = pd.read_csv(k['fs'])
+            rawdata = mkcsv['paragraph']
+            temvec = TfidfVectorizer(
+                tokenizer=hyungextrac,
+                min_df=0.05,
+                max_df=1.0
+            )
+            X = temvec.fit_transform(rawdata)
+            keyvec[k['rn']] = {"vec": temvec, "X": X, 'raw': rawdata}
+            print(k['rn'], "done")
+
+        return keyvec
